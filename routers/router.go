@@ -42,6 +42,18 @@ func SetUpRouter() *gin.Engine {
 		V1Group.POST("/upload/image", controller.UploadImage)
 		//替换头像
 		V1Group.PUT("/user/avatar", controller.UpdateAvatar)
+		//文集相关接口
+		V1Group.POST("/anthology/create", controller.CreateAnthology)
+		V1Group.GET("/anthology/my", controller.GetMyAnthology)
+		V1Group.GET("/anthology/all", controller.GetAllAnthology)
+		V1Group.PUT("/anthology/update", controller.UpdateAnthology)
+		V1Group.DELETE("/anthology/delete", controller.DeleteAnthology)
+		//画廊相关接口
+		V1Group.POST("/gallery/create", controller.CreateGallery)
+		V1Group.GET("/gallery/my", controller.GetMyGallery)
+		V1Group.GET("/gallery/detail", controller.GetGalleryDetail)
+		V1Group.PUT("/gallery/update", controller.UpdateGallery)
+		V1Group.DELETE("/gallery/delete", controller.DeleteGallery)
 	}
 	return r
 }
