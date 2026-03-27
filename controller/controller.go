@@ -48,11 +48,15 @@ func UserLogin(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "无效的请求数据"})
 		return
 	}
-	result := server.UserLogint(requestData.Username, requestData.Password)
+	result, user := server.UserLogint(requestData.Username, requestData.Password)
 	if result == "" {
 		c.JSON(http.StatusOK, gin.H{
-			"Code":    http.StatusOK,
-			"Message": "登录成功",
+			"Code":       http.StatusOK,
+			"Message":    "登录成功",
+			"user_id":    user.ID,
+			"user_email": user.Email,
+			"username":   user.Username,
+			"avatar_url": user.AvatarUrl,
 		})
 	} else {
 		c.JSON(http.StatusNotFound, gin.H{

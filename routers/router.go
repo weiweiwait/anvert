@@ -33,6 +33,15 @@ func SetUpRouter() *gin.Engine {
 		V1Group.GET("/user/signature", controller.SendSignature)
 		//添加评论
 		V1Group.POST("/user/put/comment", controller.CreatComments)
+		//笔记相关接口
+		V1Group.POST("/note/create", controller.CreateNote)
+		V1Group.GET("/note/list", controller.GetNotes)
+		V1Group.PUT("/note/update", controller.UpdateNote)
+		V1Group.DELETE("/note/delete", controller.DeleteNote)
+		//图片上传
+		V1Group.POST("/upload/image", controller.UploadImage)
+		//替换头像
+		V1Group.PUT("/user/avatar", controller.UpdateAvatar)
 	}
 	return r
 }

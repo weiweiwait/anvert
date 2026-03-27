@@ -51,23 +51,23 @@ func UserRegister(username string, password string, email string, code string) s
 		return "验证码错误，请检查后再提交"
 	}
 }
-func UserLogint(username string, password string) string {
+func UserLogint(username string, password string) (string, *model.User) {
 	//判断用户名是不是为空
 	if username == "" {
-		return "用户名不能为空"
+		return "用户名不能为空", nil
 	}
 	// 根据用户名从数据库中获取用户信息
 	user, _ := model.FindAUserByName(username)
 
 	// 验证用户是否存在
 	if user == nil {
-		return "用户不存在"
+		return "用户不存在", nil
 	}
 	if password != user.Password {
-		return "密码不正确"
+		return "密码不正确", nil
 	}
 
-	return "" // 登录成功，返回空字符串表示成功
+	return "", user // 登录成功，返回空字符串和用户信息
 }
 
 // 发送验证码
@@ -105,4 +105,31 @@ func SendEmail(email string, hashAccount bool) string {
 	}
 
 	return ""
+}
+
+// 替换用户头像：上传图片到七牛云，更新数据库头像URL
+
+func UpdateAvatar(userID uint, fileData []byte, fileName string, fileSize int64) (string, string) {
+	if userID == 0 {
+		return "", "用户ID不能为空"
+	}
+
+	// 校验文件大小，限制5MB
+	if fileSize > 5*1024*1024 {
+		return "", "文件大小不能超过5MB"
+	}
+
+	// 上传到七牛云
+	url, err := dao.UploadToQiNiu(fileData, fileName)
+	if err != nil {
+		return "", "头像上传失败: " + err.Error()
+	}
+
+	// 更新数据库中的头像URL
+	err = model.UpdateUserAvatar(userID, url)
+	if err != nil {
+		return "", "更新头像失败，请联系管理员"
+	}
+
+	return url, ""
 }
