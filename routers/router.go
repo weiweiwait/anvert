@@ -54,6 +54,13 @@ func SetUpRouter() *gin.Engine {
 		V1Group.GET("/gallery/detail", controller.GetGalleryDetail)
 		V1Group.PUT("/gallery/update", controller.UpdateGallery)
 		V1Group.DELETE("/gallery/delete", controller.DeleteGallery)
+		//关注相关接口
+		V1Group.POST("/follow", controller.FollowUser)
+		V1Group.DELETE("/follow", controller.UnfollowUser)
+		V1Group.GET("/follow/followers", controller.GetMyFollowers)
+		V1Group.GET("/follow/following", controller.GetMyFollowing)
+		V1Group.GET("/follow/check", controller.CheckFollow)
+		V1Group.POST("/follow/batch-check", controller.BatchCheckFollow)
 	}
 	return r
 }

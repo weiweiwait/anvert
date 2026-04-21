@@ -81,3 +81,14 @@ CREATE TABLE anthology (
     updated_at DATETIME DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES userss(id)
 );
+
+-- 9. 关注表（粉丝关系）
+CREATE TABLE user_follow (
+    id          INT PRIMARY KEY AUTO_INCREMENT,
+    follower_id INT NOT NULL                       COMMENT '关注者（粉丝）的用户ID',
+    followed_id INT NOT NULL                       COMMENT '被关注者的用户ID',
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_follow (follower_id, followed_id),
+    FOREIGN KEY (follower_id) REFERENCES userss(id),
+    FOREIGN KEY (followed_id) REFERENCES userss(id)
+);
